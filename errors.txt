@@ -1,0 +1,66 @@
+# أخطاء واجهتني في مشروع بوت المكتبة مع الأكواد والحلول
+
+1. خطأ كلمة المرور عند الاتصال بقاعدة البيانات:
+   الرسالة:
+   psycopg2.OperationalError: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+   الكود:
+   conn = psycopg2.connect(dbname="books", user="postgres", password="IOP_890I")
+   الحل: التأكد من كلمة المرور في ملف الإعدادات (config.py) وأنها مطابقة لكلمة مرور المستخدم في PostgreSQL.
+
+2. خطأ عدم وجود قاعدة البيانات:
+   الرسالة:
+   psycopg2.OperationalError: connection to server at "localhost" (::1), port 5432 failed: FATAL:  database "books" does not exist
+   الكود:
+   conn = psycopg2.connect(dbname="books", ...)
+   الحل: إنشاء قاعدة البيانات "books" في PostgreSQL:
+   CREATE DATABASE books;
+
+3. مشكلة اسم المتغير عند الاتصال:
+   الكود الخاطئ:
+   conn = psycopg2.connect(db="books", ...)
+   الصحيح:
+   conn = psycopg2.connect(dbname="books", ...)
+   الحل: يجب استخدام dbname وليس db.
+
+4. نسيان استدعاء commit:
+   الكود:
+   conn.commit  # خطأ
+   conn.commit()  # صحيح
+   الحل: يجب وضع () لاستدعاء الدالة.
+
+5. مشكلة عدم ربط الكتاب بالتصنيف:
+   الكود:
+   @bot.callback_query_handler(func=lambda call: call.data.startswith("savebook_"))
+   def finalize_book(call):
+       cat_id = int(call.data.split("_")[1])
+       add_book(..., category_id=cat_id, ...)
+   الحل: التأكد من ترتيب تسجيل الـ handler وأنه منفصل عن handler العام.
+
+6. زر اختيار التصنيف لا يعمل بعد رفع الكتاب:
+   الكود السابق:
+   @bot.callback_query_handler(func=lambda call: True)
+   def callback(call):
+       ...existing code...
+   الحل البرمجي:
+   فصل handler الخاص بـ savebook_:
+   @bot.callback_query_handler(func=lambda call: call.data.startswith("savebook_"))
+   def finalize_book(call):
+       ...existing code...
+   @bot.callback_query_handler(func=lambda call: not call.data.startswith("savebook_"))
+   def callback(call):
+       ...existing code...
+
+7. تعليقات في الكود توضح أخطاء سابقة:
+   أمثلة:
+   db بدال dbname
+   نسيت ()
+   كان غلط
+   الحل: مراجعة التعليقات وتعديل الكود حسب الحاجة.
+
+8. نسيان ربط ملف n.py في main.py:
+   الحل:
+   import n
+   يجب وضعه في أعلى ملف main.py.
+
+---
+إذا واجهت أخطاء أخرى أضفها هنا مع الأكواد والحلول المقترحة.

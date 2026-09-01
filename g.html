@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoo & — سوق الحيوانات الأليفة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g1: #A2D045;
+  --g2: #8CB83B;
+  --g3: #6a9228;
+  --g4: #4e6e1d;
+  --white: #FFFFFF;
+  --off: #F7FCF0;
+  --cream: #EAF5CC;
+  --muted: rgba(162,208,69,0.18);
+  --border: rgba(140,184,59,0.22);
+  --text: #1b2d00;
+  --text2: #3d5c00;
+  --text3: #7aaa30;
+  --shadow: 0 6px 28px rgba(74,110,29,0.14);
+  --shadow2: 0 14px 48px rgba(74,110,29,0.22);
+  --r: 18px;
+  --r2: 12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cairo',sans-serif;
+  background: var(--g1);
+  color: var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── AMBIENT BG ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 5% 5%, rgba(255,255,255,.22) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 70% at 95% 95%, rgba(140,184,59,.38) 0%, transparent 55%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── PAW PATTERN ── */
+.paw-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.paw-bg::before,.paw-bg::after{
+  content:'';position:absolute;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 100 100'%3E%3Ccircle cx='25' cy='18' r='9' fill='white' opacity='.07'/%3E%3Ccircle cx='58' cy='15' r='7' fill='white' opacity='.07'/%3E%3Ccircle cx='15' cy='48' r='8' fill='white' opacity='.07'/%3E%3Ccircle cx='70' cy='45' r='8' fill='white' opacity='.07'/%3E%3Cellipse cx='43' cy='68' rx='26' ry='28' fill='white' opacity='.07'/%3E%3C/svg%3E");
+  background-size: 90px 90px;
+}
+.paw-bg::before{inset:0;}
+.paw-bg::after{inset:0;transform:rotate(45deg) scale(1.2);opacity:.5;}
+
+/* ── LAYOUT ── */
+.app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh;}
+
+/* ── HEADER ── */
+header{
+  background: rgba(255,255,255,.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid var(--border);
+  height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  position:sticky;top:0;z-index:200;
+  box-shadow: 0 3px 20px rgba(140,184,59,.13);
+}
+
+/* LOGO */
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;}
+.logo-icon{
+  width:46px;height:46px;
+  background:linear-gradient(135deg, var(--g1), var(--g2));
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(140,184,59,.38);
+  position:relative;overflow:hidden;
+  flex-shrink:0;
+}
+.logo-icon::before{
+  content:'';position:absolute;top:-8px;left:-8px;
+  width:24px;height:24px;border-radius:50%;
+  background:rgba(255,255,255,.25);
+}
+/* SVG logo: cat bigger + dog smaller */
+.logo-svg{width:32px;height:32px;fill:white;}
+
+.logo-wordmark{
+  font-family:'Tajawal',sans-serif;
+  font-weight:900;
+  font-size:24px;
+  color: var(--g3);
+  letter-spacing:-0.5px;
+  line-height:1;
+}
+.logo-wordmark .amp{color:var(--g1);font-size:20px;}
+.logo-sub{font-size:10px;font-weight:400;color:var(--text3);display:block;letter-spacing:.3px;}
+
+.header-right{display:flex;align-items:center;gap:8px;}
+.hbtn{
+  padding:8px 16px;border-radius:10px;border:none;
+  font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .2s;
+}
+.hbtn.ghost{background:transparent;color:var(--text2);}
+.hbtn.ghost:hover{background:var(--cream);}
+.hbtn.solid{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;box-shadow:0 3px 12px rgba(140,184,59,.32);
+}
+.hbtn.solid:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(140,184,59,.42);}
+.cart-wrap{position:relative;cursor:pointer;}
+.cart-wrap .hbtn{padding:8px 13px;background:var(--cream);border:1.5px solid var(--border);color:var(--text2);font-size:17px;}
+.cart-wrap .hbtn:hover{background:var(--muted);}
+.badge{
+  position:absolute;top:-7px;right:-7px;
+  background:#ff4757;color:white;border-radius:50%;
+  width:19px;height:19px;font-size:10px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cairo',sans-serif;border:2px solid white;
+}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg, white 35%, #ebf7c7 100%);
+  padding:52px 48px 44px;
+  display:flex;align-items:center;gap:52px;
+  border-bottom:2px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;
+  bottom:-60px;left:-60px;
+  width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(162,208,69,.12),transparent 70%);
+}
+.hero-copy{flex:1;animation:fadeUp .6s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+.hero-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--cream);border:1.5px solid var(--g1);
+  border-radius:99px;padding:5px 14px;
+  font-size:11px;font-weight:700;color:var(--g3);
+  margin-bottom:14px;
+}
+.hero h1{
+  font-family:'Tajawal',sans-serif;
+  font-size:44px;font-weight:900;
+  color:var(--text);line-height:1.13;margin-bottom:12px;
+}
+.hero h1 em{font-style:normal;color:var(--g2);}
+.hero p{font-size:14px;color:var(--text3);line-height:1.9;max-width:400px;margin-bottom:26px;}
+.hero-ctas{display:flex;gap:12px;margin-bottom:32px;}
+.btn-hero-primary{
+  padding:13px 28px;border-radius:var(--r2);border:none;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;box-shadow:0 5px 18px rgba(140,184,59,.38);
+  transition:all .25s;
+}
+.btn-hero-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(140,184,59,.48);}
+.btn-hero-sec{
+  padding:13px 24px;border-radius:var(--r2);
+  border:2px solid var(--border);background:white;
+  color:var(--text2);font-family:'Cairo',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:all .2s;
+}
+.btn-hero-sec:hover{border-color:var(--g1);color:var(--g3);}
+
+.hero-kpis{display:flex;gap:32px;}
+.kpi strong{display:block;font-family:'Tajawal',sans-serif;font-size:26px;font-weight:900;color:var(--g2);}
+.kpi small{font-size:11px;color:var(--text3);font-weight:600;}
+
+/* hero visual */
+.hero-vis{
+  width:260px;height:260px;flex-shrink:0;
+  position:relative;animation:fadeUp .7s .1s ease both;
+}
+.hero-ring{
+  width:100%;height:100%;border-radius:50%;
+  background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 100%);
+  box-shadow:0 18px 56px rgba(140,184,59,.38);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero-ring::before{
+  content:'';position:absolute;top:-25%;left:-25%;
+  width:50%;height:50%;border-radius:50%;background:rgba(255,255,255,.18);
+}
+.hero-ring-inner{font-size:90px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.12));z-index:1;}
+.float-tag{
+  position:absolute;background:white;border-radius:11px;
+  padding:7px 13px;box-shadow:var(--shadow);font-size:11px;font-weight:700;
+  white-space:nowrap;animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.float-tag.f1{top:4%;right:-18px;color:var(--g3);animation-delay:0s;}
+.float-tag.f2{bottom:10%;left:-22px;color:#e67e22;animation-delay:.7s;}
+.float-tag.f3{top:52%;right:-28px;color:var(--text2);font-size:10px;animation-delay:1.4s;}
+
+/* ── TAB NAV ── */
+.tabnav{
+  background:white;
+  padding:16px 28px;
+  display:flex;gap:10px;align-items:center;
+  border-bottom:2px solid var(--border);
+  overflow-x:auto;scrollbar-width:none;
+  position:sticky;top:68px;z-index:100;
+  box-shadow:0 2px 12px rgba(140,184,59,.08);
+}
+.tabnav::-webkit-scrollbar{display:none;}
+.tab{
+  display:flex;align-items:center;gap:7px;
+  padding:9px 20px;border-radius:99px;
+  border:2px solid transparent;
+  font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .22s;white-space:nowrap;
+  background:var(--off);color:var(--text2);
+}
+.tab:hover,.tab.on{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;box-shadow:0 4px 14px rgba(140,184,59,.32);
+}
+.tab-ico{font-size:16px;}
+
+/* ── MAIN ── */
+.main{
+  padding:28px;
+  display:grid;grid-template-columns:268px 1fr;gap:24px;
+  flex:1;
+}
+@media(max-width:900px){.main{grid-template-columns:1fr;}.sidebar{display:none!important;}}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:18px;}
+.scard{
+  background:linear-gradient(160deg,white 0%,#f3fadf 100%);
+  border:1.5px solid var(--border);border-radius:var(--r);
+  padding:20px;box-shadow:var(--shadow);
+}
+.scard h4{
+  font-size:13px;font-weight:700;color:var(--text);
+  margin-bottom:14px;display:flex;align-items:center;gap:7px;
+}
+.scard h4 span{font-size:15px;}
+
+.flabel{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;}
+.fgroup{margin-bottom:14px;}
+.chips{display:flex;flex-wrap:wrap;gap:5px;}
+.chip{
+  padding:4px 11px;border-radius:99px;border:1.5px solid var(--border);
+  font-size:11px;font-weight:600;cursor:pointer;
+  background:white;color:var(--text2);transition:all .15s;
+}
+.chip.on,.chip:hover{background:var(--g1);border-color:var(--g1);color:white;}
+
+input[type=range]{width:100%;accent-color:var(--g2);cursor:pointer;}
+.price-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-top:3px;}
+
+/* fee breakdown card */
+.feec{
+  background:linear-gradient(135deg,var(--g4) 0%,var(--g3) 100%);
+  border-radius:var(--r);padding:18px;color:white;box-shadow:var(--shadow2);
+}
+.feec h4{font-size:12px;font-weight:700;margin-bottom:12px;opacity:.9;display:flex;align-items:center;gap:6px;}
+.fee-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:12px;
+}
+.fee-row:last-child{border-bottom:none;}
+.fee-row span:first-child{opacity:.78;}
+.fee-val{font-family:'Tajawal',sans-serif;font-size:15px;font-weight:900;color:var(--g1);}
+.fee-note{margin-top:10px;font-size:10px;opacity:.55;line-height:1.6;}
+
+/* integration links */
+.integ-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.integ-item{
+  background:white;border:1.5px solid var(--border);border-radius:10px;
+  padding:10px 10px 9px;text-align:center;font-size:10px;font-weight:700;color:var(--text2);
+  cursor:pointer;transition:all .2s;
+}
+.integ-item:hover{border-color:var(--g1);color:var(--g3);transform:translateY(-2px);}
+.integ-item .ico{font-size:20px;display:block;margin-bottom:4px;}
+
+/* ── CONTENT ── */
+.content{flex:1;}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.ch h2{
+  font-family:'Tajawal',sans-serif;font-size:20px;font-weight:800;
+  color:white;text-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.ch h2 small{font-size:12px;font-weight:400;color:rgba(255,255,255,.7);margin-right:7px;}
+select.sort{
+  padding:8px 13px;border-radius:10px;
+  border:1.5px solid rgba(255,255,255,.4);
+  background:rgba(255,255,255,.92);
+  font-family:'Cairo',sans-serif;font-size:12px;color:var(--text);cursor:pointer;
+}
+
+/* ── ANIMAL CATEGORY CARDS ── */
+.ancat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-bottom:28px;}
+.ancat{
+  background:linear-gradient(160deg,white,#eff9d2);
+  border:2px solid var(--border);border-radius:var(--r);
+  padding:18px 12px;text-align:center;cursor:pointer;
+  transition:all .28s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:var(--shadow);
+}
+.ancat:hover{transform:translateY(-5px);border-color:var(--g1);box-shadow:var(--shadow2);}
+.ancat-ring{
+  width:72px;height:72px;margin:0 auto 11px;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:34px;box-shadow:0 5px 18px rgba(140,184,59,.28);
+  position:relative;
+}
+.ancat-ring::after{
+  content:'';position:absolute;top:7px;left:7px;
+  width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.22);
+}
+.ancat-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.ancat-count{font-size:11px;color:var(--text3);}
+
+/* ── PRODUCT GRID ── */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;}
+.pcard{
+  background:linear-gradient(160deg,white 0%,#f4fadf 100%);
+  border-radius:var(--r);overflow:hidden;
+  border:1.5px solid var(--border);
+  box-shadow:0 4px 18px rgba(74,110,29,.09);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);cursor:pointer;
+  position:relative;
+}
+.pcard:hover{transform:translateY(-7px);box-shadow:0 16px 38px rgba(74,110,29,.2);border-color:var(--g1);}
+.pbadge{
+  position:absolute;top:11px;right:11px;z-index:2;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;border-radius:8px;padding:3px 10px;font-size:9px;font-weight:800;
+}
+.pbadge.sale{background:linear-gradient(135deg,#ff6b35,#ff4757);}
+.pbadge.rx{background:linear-gradient(135deg,#8e44ad,#6c3483);}
+.pbadge.new{background:linear-gradient(135deg,#2980b9,#1a5276);}
+.pimg{
+  height:160px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--cream) 0%,#d9f0a2 100%);
+  position:relative;overflow:hidden;
+}
+.pimg::after{
+  content:'';position:absolute;bottom:-18px;right:-18px;
+  width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.28);
+}
+.pemo{
+  font-size:68px;line-height:1;
+  filter:drop-shadow(0 3px 10px rgba(0,0,0,.08));
+  transition:transform .28s;z-index:1;position:relative;
+}
+.pcard:hover .pemo{transform:scale(1.12) rotate(-6deg);}
+.pinfo{padding:14px;}
+.pname{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.4;}
+.pseller{font-size:10px;color:var(--text3);margin-bottom:0;}
+.pfoot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 14px;border-top:1.5px solid var(--border);
+  background:rgba(162,208,69,.06);
+}
+.pprice{font-family:'Tajawal',sans-serif;font-weight:900;font-size:17px;color:var(--g4);}
+.pprice small{font-size:10px;font-weight:400;color:var(--text3);margin-right:2px;}
+.padd{
+  width:34px;height:34px;border-radius:9px;border:none;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(140,184,59,.32);transition:all .2s;
+}
+.padd:hover{transform:scale(1.12);box-shadow:0 5px 16px rgba(140,184,59,.45);}
+
+/* ── MODAL ── */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.52);
+  backdrop-filter:blur(5px);z-index:500;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.overlay.on{opacity:1;pointer-events:all;}
+.modal{
+  background:white;border-radius:24px;width:100%;max-width:540px;
+  box-shadow:0 28px 72px rgba(0,0,0,.22);overflow:hidden;
+  transform:scale(.9) translateY(22px);
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1);
+}
+.overlay.on .modal{transform:scale(1) translateY(0);}
+.mhead{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  padding:22px 26px;display:flex;justify-content:space-between;align-items:center;color:white;
+}
+.mhead h3{font-family:'Tajawal',sans-serif;font-size:17px;font-weight:800;}
+.mclose{
+  background:rgba(255,255,255,.22);border:none;border-radius:8px;
+  color:white;width:30px;height:30px;font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;
+}
+.mclose:hover{background:rgba(255,255,255,.38);}
+.mbody{padding:26px;}
+.mvis{text-align:center;margin-bottom:22px;}
+.mvis .emo{font-size:76px;}
+.mvis .mname{font-family:'Tajawal',sans-serif;font-size:19px;font-weight:800;color:var(--text);margin-top:7px;}
+.mvis .mseller{font-size:12px;color:var(--text3);margin-top:3px;}
+.breakdown{
+  background:var(--off);border:1.5px solid var(--border);
+  border-radius:var(--r2);padding:16px;margin:18px 0;
+}
+.brow{
+  display:flex;justify-content:space-between;padding:6px 0;
+  font-size:12px;border-bottom:1px dashed var(--border);
+}
+.brow:last-child{border-bottom:none;}
+.brow.total{
+  font-weight:800;font-size:15px;color:var(--g4);
+  padding-top:11px;margin-top:3px;
+  border-top:2px solid var(--g1);border-bottom:none;
+}
+.brow.comm span:last-child{color:var(--g2);font-weight:700;}
+.brow.vat span:last-child{color:#e67e22;font-weight:700;}
+.brow span:last-child{font-family:'Tajawal',sans-serif;font-weight:600;}
+.macts{display:flex;gap:10px;margin-top:4px;}
+.mbuy{
+  flex:1;padding:13px;border-radius:var(--r2);border:none;
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;box-shadow:0 5px 16px rgba(140,184,59,.36);transition:all .2s;
+}
+.mbuy:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(140,184,59,.46);}
+.mwish{
+  padding:13px 16px;border-radius:var(--r2);
+  border:2px solid var(--border);background:white;
+  font-size:17px;cursor:pointer;transition:all .2s;
+}
+.mwish:hover{background:var(--cream);border-color:var(--g1);}
+
+/* ── SECTION: DB SCHEMA ── */
+.schema-wrap{
+  background:linear-gradient(160deg,#172600 0%,#243c00 100%);
+  border-radius:var(--r);padding:26px;color:white;
+  box-shadow:var(--shadow2);
+}
+.schema-wrap>h2{
+  font-family:'Tajawal',sans-serif;font-size:19px;font-weight:800;
+  color:var(--g1);margin-bottom:20px;display:flex;align-items:center;gap:9px;
+}
+.tbls{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:760px){.tbls{grid-template-columns:1fr;}}
+.tbl{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(162,208,69,.18);border-radius:var(--r2);overflow:hidden;
+}
+.tbl-head{
+  background:rgba(162,208,69,.13);padding:9px 13px;
+  font-size:11px;font-weight:700;color:var(--g1);
+  display:flex;align-items:center;gap:6px;
+  border-bottom:1px solid rgba(162,208,69,.14);
+}
+.tbl-row{
+  display:flex;justify-content:space-between;
+  padding:6px 13px;font-size:10px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  color:rgba(255,255,255,.78);
+}
+.tbl-row:last-child{border-bottom:none;}
+.ft{color:#64d2ff;font-family:monospace;font-size:9px;}
+.pk{color:#ffd60a;font-size:8px;font-weight:800;}
+.fk{color:#ff9f0a;font-size:8px;font-weight:800;}
+
+.relations{
+  margin-top:18px;padding:16px;
+  background:rgba(255,255,255,.04);border-radius:var(--r2);
+  border:1px solid rgba(162,208,69,.16);
+}
+.relations h3{font-size:12px;font-weight:700;color:var(--g1);margin-bottom:10px;}
+.rel-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.rel-tag{
+  background:rgba(162,208,69,.1);border:1px solid rgba(162,208,69,.22);
+  padding:5px 11px;border-radius:8px;font-size:10px;font-family:monospace;
+  color:rgba(255,255,255,.75);
+}
+
+.formula{
+  margin-top:16px;padding:16px;
+  background:rgba(255,255,255,.04);border-radius:var(--r2);
+  border:1px solid rgba(255,200,0,.2);
+}
+.formula h3{font-size:12px;font-weight:700;color:#ffd60a;margin-bottom:12px;}
+.formula code{
+  display:block;font-family:monospace;font-size:11px;
+  line-height:2.2;color:rgba(255,255,255,.82);
+}
+.formula code .c1{color:#64d2ff;}
+.formula code .c2{color:#ff9f0a;}
+.formula code .c3{color:#30d158;}
+.formula code .c4{color:#ff6b35;}
+.fex{
+  margin-top:12px;padding:11px;
+  background:rgba(255,255,255,.05);border-radius:9px;
+  font-size:11px;color:rgba(255,255,255,.65);line-height:1.9;
+}
+.fex strong{color:var(--g1);}
+
+/* ── TRACKING ── */
+.track-card{
+  background:linear-gradient(160deg,white,#f3fadf);
+  border:1.5px solid var(--border);border-radius:var(--r);
+  padding:26px;box-shadow:var(--shadow);
+}
+.track-search{display:flex;gap:10px;margin-bottom:24px;}
+.track-search input{
+  flex:1;padding:11px 15px;border:1.5px solid var(--border);
+  border-radius:var(--r2);font-family:'Cairo',sans-serif;font-size:13px;
+  outline:none;transition:border .2s;
+}
+.track-search input:focus{border-color:var(--g1);}
+.track-search button{
+  padding:11px 22px;background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;border:none;border-radius:var(--r2);
+  font-family:'Cairo',sans-serif;font-weight:700;cursor:pointer;
+  transition:all .2s;
+}
+.track-search button:hover{transform:translateY(-1px);}
+.order-card{
+  border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:16px;
+}
+.order-head{
+  background:var(--cream);padding:14px 18px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1.5px solid var(--border);
+}
+.order-num{font-weight:800;font-size:14px;color:var(--text);}
+.order-date{font-size:11px;color:var(--text3);margin-top:2px;}
+.ostatus{
+  background:linear-gradient(135deg,var(--g1),var(--g2));
+  color:white;padding:5px 14px;border-radius:99px;font-size:11px;font-weight:700;
+}
+.ostatus.shipping{background:linear-gradient(135deg,#e67e22,#ca6f1e);}
+.progress-track{padding:18px 20px;}
+.steps{display:flex;justify-content:space-between;position:relative;}
+.steps::before{
+  content:'';position:absolute;top:12px;right:10%;left:10%;
+  height:3px;background:var(--g1);border-radius:99px;
+}
+.step{text-align:center;position:relative;z-index:1;flex:1;}
+.step-dot{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--g2);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;margin:0 auto 7px;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.step-dot.pend{background:#ddd;color:#999;}
+.step-label{font-size:10px;color:var(--g3);font-weight:700;max-width:55px;margin:0 auto;line-height:1.3;}
+.step-label.pend{color:#bbb;font-weight:400;}
+
+/* vaccines reminder */
+.vax-card{
+  margin-top:24px;background:linear-gradient(135deg,var(--g4),var(--g3));
+  border-radius:var(--r);padding:20px;color:white;
+}
+.vax-card h3{font-size:14px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.vax-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:12px;
+}
+.vax-row:last-child{border-bottom:none;}
+.vax-name{font-weight:600;}
+.vax-date{opacity:.7;font-size:11px;}
+.vax-chip{padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;}
+.vax-chip.due{background:#ff4757;color:white;}
+.vax-chip.soon{background:#ffd60a;color:#333;}
+.vax-chip.ok{background:var(--g1);color:white;}
+
+/* ── SELLER DASHBOARD ── */
+.dash-kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:22px;}
+.dkpi{
+  background:linear-gradient(160deg,white,#f3fadf);
+  border:1.5px solid var(--border);border-radius:var(--r);
+  padding:18px;box-shadow:var(--shadow);
+}
+.dkpi .dico{font-size:26px;margin-bottom:8px;}
+.dkpi .dlabel{font-size:11px;color:var(--text3);font-weight:600;margin-bottom:5px;}
+.dkpi .dval{font-family:'Tajawal',sans-serif;font-size:22px;font-weight:900;}
+.dkpi .dval.green{color:var(--g3);}
+.dkpi .dval.orange{color:#e67e22;}
+.dkpi .dval.blue{color:#2980b9;}
+
+.orders-table{
+  background:linear-gradient(160deg,white,#f3fadf);
+  border:1.5px solid var(--border);border-radius:var(--r);
+  padding:22px;box-shadow:var(--shadow);
+}
+.orders-table h3{font-size:15px;font-weight:800;margin-bottom:15px;color:var(--text);}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{
+  padding:9px 11px;text-align:right;font-weight:700;color:var(--text2);
+  background:var(--cream);border-bottom:2px solid var(--border);
+}
+td{padding:9px 11px;border-bottom:1px solid var(--border);color:var(--text);}
+tr:last-child td{border-bottom:none;}
+.status-done{color:var(--g3);font-weight:700;}
+.status-ship{color:#e67e22;font-weight:700;}
+
+/* ── TOAST ── */
+.toasts{
+  position:fixed;bottom:26px;left:50%;transform:translateX(-50%);
+  z-index:900;display:flex;flex-direction:column;align-items:center;gap:9px;
+  pointer-events:none;
+}
+.toast{
+  background:linear-gradient(135deg,var(--g4),var(--g3));
+  color:white;padding:11px 22px;border-radius:99px;
+  font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;
+  box-shadow:0 7px 22px rgba(0,0,0,.22);
+  animation: tin .38s cubic-bezier(.34,1.56,.64,1) forwards,
+             tout .28s ease 2s forwards;
+  opacity:0;
+}
+@keyframes tin{from{opacity:0;transform:translateY(18px) scale(.9);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes tout{from{opacity:1;}to{opacity:0;transform:translateY(-8px);}}
+
+/* ── UTILITY ── */
+.sep{height:2px;background:var(--border);margin:22px 0;border-radius:99px;}
+</style>
+</head>
+<body>
+<div class="paw-bg"></div>
+<div class="app">
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <!-- Cat big + Dog small SVG -->
+      <svg class="logo-svg" viewBox="0 0 80 80" fill="white">
+        <!-- Cat (bigger, center-right) -->
+        <ellipse cx="44" cy="46" rx="18" ry="20"/>
+        <polygon points="28,28 34,42 22,42"/>
+        <polygon points="54,26 60,40 48,40"/>
+        <circle cx="38" cy="40" r="2.5"/>
+        <circle cx="50" cy="40" r="2.5"/>
+        <line x1="32" y1="46" x2="20" y2="43" stroke="rgba(162,208,69,.6)" stroke-width="1.5"/>
+        <line x1="32" y1="48" x2="20" y2="48" stroke="rgba(162,208,69,.6)" stroke-width="1.5"/>
+        <!-- Dog (smaller, left side) -->
+        <ellipse cx="18" cy="52" rx="11" ry="13" opacity=".85"/>
+        <ellipse cx="10" cy="43" rx="5" ry="7" opacity=".85"/>
+        <ellipse cx="26" cy="43" rx="4" ry="6" opacity=".85"/>
+        <circle cx="16" cy="47" r="1.8" fill="rgba(162,208,69,.6)"/>
+        <circle cx="22" cy="47" r="1.8" fill="rgba(162,208,69,.6)"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-wordmark">Zoo<span class="amp"> &</span></div>
+      <span class="logo-sub">سوق الحيوانات الأليفة</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="hbtn ghost" onclick="gotoSchema()">🗄️ قاعدة البيانات</button>
+    <button class="hbtn ghost" onclick="showT('💡 استخدم التبويبات للتنقل بين الأقسام')">مساعدة</button>
+    <div class="cart-wrap" onclick="showT('🛒 السلة: ' + cartN + ' عنصر')">
+      <button class="hbtn">🛒</button>
+      <span class="badge" id="cartB">0</span>
+    </div>
+    <button class="hbtn solid">دخول / تسجيل</button>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-copy">
+    <div class="hero-pill">🇸🇦 متوافق مع أنظمة ZATCA وفاتورة</div>
+    <h1>سوق <em>Zoo &</em><br>الأول في المملكة</h1>
+    <p>منصة متكاملة لبيع وشراء الحيوانات الأليفة ومستلزماتها وأدويتها — بضريبة ١٥٪ وعمولة شفافة.</p>
+    <div class="hero-ctas">
+      <button class="btn-hero-primary" onclick="showT('🐾 مرحباً بك في Zoo &!')">تصفح الآن</button>
+      <button class="btn-hero-sec" onclick="switchToSeller()">🏪 أنا بائع</button>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi"><strong>٢٤٠+</strong><small>بائع نشط</small></div>
+      <div class="kpi"><strong>١٢٠٠+</strong><small>منتج</small></div>
+      <div class="kpi"><strong>٩٨٪</strong><small>رضا</small></div>
+    </div>
+  </div>
+  <div class="hero-vis">
+    <div class="hero-ring">
+      <div class="hero-ring-inner">🐾</div>
+    </div>
+    <div class="float-tag f1">🐕 ٤٢ كلب متاح</div>
+    <div class="float-tag f2">🐈 ٦١ قطة متاحة</div>
+    <div class="float-tag f3">💊 صيدلية بيطرية معتمدة</div>
+  </div>
+</section>
+
+<!-- ═══ TAB NAV ═══ -->
+<nav class="tabnav" id="tabNav">
+  <button class="tab on" onclick="sw(this,'animals')"><span class="tab-ico">🐾</span>الحيوانات</button>
+  <button class="tab" onclick="sw(this,'supplies')"><span class="tab-ico">🦴</span>المستلزمات</button>
+  <button class="tab" onclick="sw(this,'medicine')"><span class="tab-ico">💊</span>الأدوية</button>
+  <button class="tab" onclick="sw(this,'track')"><span class="tab-ico">📦</span>تتبع الطلبات</button>
+  <button class="tab" onclick="sw(this,'seller')"><span class="tab-ico">🏪</span>لوحة البائع</button>
+  <button class="tab" onclick="sw(this,'schema')"><span class="tab-ico">🗄️</span>قاعدة البيانات</button>
+</nav>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main" id="mainGrid">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebarEl">
+
+    <!-- Filters -->
+    <div class="scard">
+      <h4><span>🔽</span>تصفية النتائج</h4>
+      <div class="fgroup">
+        <div class="flabel">نوع الحيوان</div>
+        <div class="chips">
+          <span class="chip on" onclick="tc(this)">الكل</span>
+          <span class="chip" onclick="tc(this)">كلاب</span>
+          <span class="chip" onclick="tc(this)">قطط</span>
+          <span class="chip" onclick="tc(this)">طيور</span>
+          <span class="chip" onclick="tc(this)">أسماك</span>
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">المدينة</div>
+        <div class="chips">
+          <span class="chip on" onclick="tc(this)">كل المدن</span>
+          <span class="chip" onclick="tc(this)">الرياض</span>
+          <span class="chip" onclick="tc(this)">جدة</span>
+          <span class="chip" onclick="tc(this)">مكة</span>
+          <span class="chip" onclick="tc(this)">الدمام</span>
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">السعر الأقصى (ر.س)</div>
+        <input type="range" min="0" max="5000" value="2500" oninput="document.getElementById('pv').textContent=toAr(this.value)">
+        <div class="price-ends"><span>٠</span><span id="pv">٢٥٠٠</span><span>٥٠٠٠+</span></div>
+      </div>
+    </div>
+
+    <!-- Fee card -->
+    <div class="feec">
+      <h4>⚖️ الرسوم والضرائب</h4>
+      <div class="fee-row"><span>ضريبة القيمة المضافة</span><span class="fee-val">١٥٪</span></div>
+      <div class="fee-row"><span>عمولة Zoo &</span><span class="fee-val">٥٪</span></div>
+      <div class="fee-row"><span>رسوم الشحن</span><span class="fee-val">٢٠ ر.س</span></div>
+      <div class="fee-row"><span>الحد الأدنى للعمولة</span><span class="fee-val">١٠ ر.س</span></div>
+      <div class="fee-note">المبلغ الإجمالي = (سعر المنتج + العمولة) × 1.15<br>متوافق مع هيئة الزكاة والضريبة ZATCA</div>
+    </div>
+
+    <!-- Integrations -->
+    <div class="scard">
+      <h4><span>🔌</span>الربط البرمجي</h4>
+      <div class="integ-grid">
+        <div class="integ-item" onclick="showT('💳 Moyasar — بوابة الدفع')"><span class="ico">💳</span>Moyasar</div>
+        <div class="integ-item" onclick="showT('📱 Apple Pay / Mada')"><span class="ico">📱</span>Mada</div>
+        <div class="integ-item" onclick="showT('📍 Google Maps API')"><span class="ico">📍</span>Maps</div>
+        <div class="integ-item" onclick="showT('🔔 Firebase Push')"><span class="ico">🔔</span>Firebase</div>
+        <div class="integ-item" onclick="showT('🧾 نظام فاتورة ZATCA')"><span class="ico">🧾</span>فاتورة</div>
+        <div class="integ-item" onclick="showT('🌿 وزارة البيئة — تراخيص')"><span class="ico">🌿</span>MEWA</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- CONTENT AREA -->
+  <div class="content" id="contentArea">
+
+    <!-- ── ANIMALS ── -->
+    <div id="sec-animals">
+      <div class="ch">
+        <h2>🐾 الحيوانات <small>٥ تصنيفات</small></h2>
+        <select class="sort"><option>الأحدث</option><option>السعر↑</option><option>الأعلى تقييماً</option></select>
+      </div>
+      <div class="ancat-grid">
+        <div class="ancat" onclick="showT('🐕 قسم الكلاب — ٤٢ إعلان')"><div class="ancat-ring">🐕</div><div class="ancat-name">كلاب</div><div class="ancat-count">٤٢ إعلان</div></div>
+        <div class="ancat" onclick="showT('🐈 قسم القطط — ٦١ إعلان')"><div class="ancat-ring">🐈</div><div class="ancat-name">قطط</div><div class="ancat-count">٦١ إعلان</div></div>
+        <div class="ancat" onclick="showT('🦜 قسم الطيور — ٢٨ إعلان')"><div class="ancat-ring">🦜</div><div class="ancat-name">طيور</div><div class="ancat-count">٢٨ إعلان</div></div>
+        <div class="ancat" onclick="showT('🐟 قسم الأسماك — ١٩ إعلان')"><div class="ancat-ring">🐟</div><div class="ancat-name">أسماك</div><div class="ancat-count">١٩ إعلان</div></div>
+        <div class="ancat" onclick="showT('🐇 قسم الأرانب — ١١ إعلان')"><div class="ancat-ring">🐇</div><div class="ancat-name">أرانب</div><div class="ancat-count">١١ إعلان</div></div>
+      </div>
+      <div class="sep"></div>
+      <div class="ch"><h2>⭐ إعلانات مميزة</h2></div>
+      <div class="pgrid">
+        <div class="pcard" onclick="openP('🐕','لابرادور ذهبي أصيل','محمد العتيبي — الرياض',2500)">
+          <div class="pbadge">مميز</div>
+          <div class="pimg"><div class="pemo">🐕</div></div>
+          <div class="pinfo"><div class="pname">لابرادور ذهبي أصيل — جرو ٣ أشهر</div><div class="pseller">👤 محمد العتيبي • الرياض</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>٢٥٠٠</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+        <div class="pcard" onclick="openP('🐈','قطة فارسية بيضاء','سارة القحطاني — جدة',1800)">
+          <div class="pbadge new">جديد</div>
+          <div class="pimg" style="background:linear-gradient(135deg,#f0f9d5,#ddf5aa)"><div class="pemo">🐈</div></div>
+          <div class="pinfo"><div class="pname">قطة فارسية بيضاء مع شهادة</div><div class="pseller">👤 سارة القحطاني • جدة</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>١٨٠٠</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+        <div class="pcard" onclick="openP('🦜','ببغاء أفريقي رمادي','أحمد المالكي — مكة',3200)">
+          <div class="pimg" style="background:linear-gradient(135deg,#e8f5d5,#cce8a0)"><div class="pemo">🦜</div></div>
+          <div class="pinfo"><div class="pname">ببغاء أفريقي رمادي — يتكلم</div><div class="pseller">👤 أحمد المالكي • مكة</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>٣٢٠٠</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SUPPLIES ── -->
+    <div id="sec-supplies" style="display:none">
+      <div class="ch"><h2>🦴 المستلزمات <small>٤ فئات</small></h2></div>
+      <div class="pgrid">
+        <div class="pcard" onclick="openP('🥩','رويال كانين كلاب ٤كغ','المتجر الرسمي — الرياض',120)">
+          <div class="pbadge sale">خصم ١٠٪</div>
+          <div class="pimg" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2)"><div class="pemo">🥩</div></div>
+          <div class="pinfo"><div class="pname">رويال كانين — أكل كلاب ٤ كغ</div><div class="pseller">👤 المتجر الرسمي • الرياض</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>١٢٠</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+        <div class="pcard" onclick="openP('🛏️','سرير قطط مخملي دافئ','بيت الحيوانات — جدة',85)">
+          <div class="pimg" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)"><div class="pemo">🛏️</div></div>
+          <div class="pinfo"><div class="pname">سرير قطط مخملي دافئ</div><div class="pseller">👤 بيت الحيوانات • جدة</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>٨٥</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+        <div class="pcard" onclick="openP('🪺','قفص طيور استانلس كبير','عالم الطيور — الدمام',350)">
+          <div class="pimg" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)"><div class="pemo">🪺</div></div>
+          <div class="pinfo"><div class="pname">قفص طيور استانلس ستيل كبير</div><div class="pseller">👤 عالم الطيور • الدمام</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>٣٥٠</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+        <div class="pcard" onclick="openP('🦮','حزام كلاب جلد أصلي','متجر بيتكو — الرياض',45)">
+          <div class="pimg" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)"><div class="pemo">🦮</div></div>
+          <div class="pinfo"><div class="pname">حزام كلاب جلد أصلي مقاس M</div><div class="pseller">👤 متجر بيتكو • الرياض</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>٤٥</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MEDICINE ── -->
+    <div id="sec-medicine" style="display:none">
+      <div class="ch"><h2>💊 الأدوية البيطرية <small>معتمدة MEWA</small></h2></div>
+      <div style="background:rgba(255,200,0,.14);border:1.5px solid rgba(255,200,0,.38);border-radius:var(--r2);padding:13px 17px;margin-bottom:18px;display:flex;gap:11px;align-items:center;color:#5a3e00;font-size:12px;font-weight:700;">
+        ⚠️ تُباع الأدوية البيطرية بوصفة طبية من صيدلية بيطرية مرخصة فقط — وزارة البيئة والمياه والزراعة.
+      </div>
+      <div class="pgrid">
+        <div class="pcard" onclick="openP('💊','بروتكت — مكافحة البراغيث','صيدلية الحيوان — الرياض',65)">
+          <div class="pbadge rx">وصفة طبية</div>
+          <div class="pimg" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7)"><div class="pemo">💊</div></div>
+          <div class="pinfo"><div class="pname">بروتكت — مكافحة البراغيث والقراد</div><div class="pseller">👤 صيدلية الحيوان المعتمدة • الرياض</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>٦٥</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+        <div class="pcard" onclick="openP('💉','لقاح الكلاب الثلاثي السنوي','عيادة بيطرية وطنية — جدة',120)">
+          <div class="pbadge rx">وصفة طبية</div>
+          <div class="pimg" style="background:linear-gradient(135deg,#e8eaf6,#c5cae9)"><div class="pemo">💉</div></div>
+          <div class="pinfo"><div class="pname">لقاح الكلاب الثلاثي السنوي</div><div class="pseller">👤 العيادة البيطرية الوطنية • جدة</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>١٢٠</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+        <div class="pcard" onclick="openP('🧴','قطرات أذن مضادة للعدوى','فيتيرين فارما — الرياض',35)">
+          <div class="pimg" style="background:linear-gradient(135deg,#e0f7fa,#b2ebf2)"><div class="pemo">🧴</div></div>
+          <div class="pinfo"><div class="pname">قطرات أذن مضادة للعدوى للقطط</div><div class="pseller">👤 فيتيرين فارما • الرياض</div></div>
+          <div class="pfoot"><div class="pprice"><small>ر.س</small>٣٥</div><button class="padd" onclick="event.stopPropagation();addC()">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TRACKING ── -->
+
+
+    <!-- ── SELLER ── -->
+    <div id="sec-seller" style="display:none">
+      <div class="ch"><h2>🏪 لوحة تحكم البائع</h2></div>
+      <div class="dash-kpis">
+        <div class="dkpi"><div class="dico">💰</div><div class="dlabel">إجمالي المبيعات</div><div class="dval green">١٢,٤٠٠ ر.س</div></div>
+        <div class="dkpi"><div class="dico">⚖️</div><div class="dlabel">عمولة Zoo & (٥٪)</div><div class="dval orange">٦٢٠ ر.س</div></div>
+        <div class="dkpi"><div class="dico">🧾</div><div class="dlabel">ضريبة ZATCA (١٥٪)</div><div class="dval blue">١,٨٦٠ ر.س</div></div>
+        <div class="dkpi"><div class="dico">📦</div><div class="dlabel">الطلبات الكلية</div><div class="dval green">٣٤ طلب</div></div>
+      </div>
+      <div class="orders-table">
+        <h3>📋 آخر الطلبات</h3>
+        <table>
+          <thead>
+            <tr><th>رقم الطلب</th><th>المنتج</th><th>المشتري</th><th>السعر</th><th>العمولة</th><th>الضريبة</th><th>الإجمالي</th><th>الحالة</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>#ORD-0891</td><td>لابرادور ذهبي</td><td>خالد الشمري</td><td>٢٥٠٠</td><td>١٢٥</td><td>٣٩٣.٧٥</td><td>٣,٠٣٨.٧٥</td><td class="status-done">مكتمل ✓</td></tr>
+            <tr><td>#ORD-0890</td><td>قطة فارسية</td><td>نوف العامري</td><td>١٨٠٠</td><td>٩٠</td><td>٢٨٣.٥</td><td>٢,١٩٣.٥</td><td class="status-ship">قيد التوصيل</td></tr>
+            <tr><td>#ORD-0889</td><td>رويال كانين ٤كغ</td><td>سعد الدوسري</td><td>١٢٠</td><td>٦</td><td>١٨.٩</td><td>١٦٤.٩</td><td class="status-done">مكتمل ✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── DB SCHEMA ── -->
+    <div id="sec-schema" style="display:none">
+      <div class="schema-wrap">
+        <h2>🗄️ هيكل قاعدة البيانات — Zoo &</h2>
+
+        <div class="tbls">
+          <div class="tbl">
+            <div class="tbl-head">👤 users</div>
+            <div class="tbl-row"><span>id <span class="pk">PK</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>name</span><span class="ft">VARCHAR(100)</span></div>
+            <div class="tbl-row"><span>phone</span><span class="ft">VARCHAR(15)</span></div>
+            <div class="tbl-row"><span>city</span><span class="ft">VARCHAR(50)</span></div>
+            <div class="tbl-row"><span>role</span><span class="ft">ENUM(buyer,seller,admin)</span></div>
+            <div class="tbl-row"><span>commercial_reg</span><span class="ft">VARCHAR NULL</span></div>
+            <div class="tbl-row"><span>wallet_balance</span><span class="ft">DECIMAL(12,2)</span></div>
+            <div class="tbl-row"><span>national_id</span><span class="ft">VARCHAR</span></div>
+            <div class="tbl-row"><span>verified_at</span><span class="ft">TIMESTAMP</span></div>
+          </div>
+          <div class="tbl">
+            <div class="tbl-head">📦 products</div>
+            <div class="tbl-row"><span>id <span class="pk">PK</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>seller_id <span class="fk">FK→users</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>category_id <span class="fk">FK→categories</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>title</span><span class="ft">VARCHAR(150)</span></div>
+            <div class="tbl-row"><span>description</span><span class="ft">TEXT</span></div>
+            <div class="tbl-row"><span>type</span><span class="ft">ENUM(animal,supply,medicine)</span></div>
+            <div class="tbl-row"><span>base_price</span><span class="ft">DECIMAL(10,2)</span></div>
+            <div class="tbl-row"><span>animal_type</span><span class="ft">ENUM(dog,cat,bird,fish...)</span></div>
+            <div class="tbl-row"><span>requires_rx</span><span class="ft">BOOLEAN</span></div>
+            <div class="tbl-row"><span>status</span><span class="ft">ENUM(active,sold,draft)</span></div>
+          </div>
+          <div class="tbl">
+            <div class="tbl-head">🛒 orders</div>
+            <div class="tbl-row"><span>id <span class="pk">PK</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>buyer_id <span class="fk">FK→users</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>seller_id <span class="fk">FK→users</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>product_id <span class="fk">FK→products</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>base_price</span><span class="ft">DECIMAL(10,2)</span></div>
+            <div class="tbl-row"><span>commission_rate</span><span class="ft">DECIMAL(4,2) DEF 5.0</span></div>
+            <div class="tbl-row"><span>commission_amount</span><span class="ft">DECIMAL(10,2)</span></div>
+            <div class="tbl-row"><span>vat_rate</span><span class="ft">DECIMAL(4,2) DEF 15.0</span></div>
+            <div class="tbl-row"><span>vat_amount</span><span class="ft">DECIMAL(10,2)</span></div>
+            <div class="tbl-row"><span>total_amount</span><span class="ft">DECIMAL(10,2)</span></div>
+            <div class="tbl-row"><span>status</span><span class="ft">ENUM(pending,paid,shipped,done,cancelled)</span></div>
+          </div>
+          <div class="tbl">
+            <div class="tbl-head">💳 transactions</div>
+            <div class="tbl-row"><span>id <span class="pk">PK</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>order_id <span class="fk">FK→orders</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>method</span><span class="ft">ENUM(mada,visa,apple_pay,stc)</span></div>
+            <div class="tbl-row"><span>gateway</span><span class="ft">ENUM(moyasar,tap)</span></div>
+            <div class="tbl-row"><span>gateway_ref</span><span class="ft">VARCHAR</span></div>
+            <div class="tbl-row"><span>amount</span><span class="ft">DECIMAL(10,2)</span></div>
+            <div class="tbl-row"><span>status</span><span class="ft">ENUM(pending,captured,failed)</span></div>
+            <div class="tbl-row"><span>paid_at</span><span class="ft">TIMESTAMP</span></div>
+          </div>
+          <div class="tbl">
+            <div class="tbl-head">📂 categories</div>
+            <div class="tbl-row"><span>id <span class="pk">PK</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>name</span><span class="ft">VARCHAR(80)</span></div>
+            <div class="tbl-row"><span>type</span><span class="ft">ENUM(animal,supply,medicine)</span></div>
+            <div class="tbl-row"><span>icon</span><span class="ft">VARCHAR</span></div>
+            <div class="tbl-row"><span>parent_id <span class="fk">FK→self</span></span><span class="ft">UUID NULL</span></div>
+          </div>
+          <div class="tbl">
+            <div class="tbl-head">🧾 vat_invoices</div>
+            <div class="tbl-row"><span>id <span class="pk">PK</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>order_id <span class="fk">FK→orders</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>seller_id <span class="fk">FK→users</span></span><span class="ft">UUID</span></div>
+            <div class="tbl-row"><span>invoice_number</span><span class="ft">VARCHAR (Fatoora format)</span></div>
+            <div class="tbl-row"><span>taxable_amount</span><span class="ft">DECIMAL(12,2)</span></div>
+            <div class="tbl-row"><span>vat_amount</span><span class="ft">DECIMAL(12,2)</span></div>
+            <div class="tbl-row"><span>zatca_uuid</span><span class="ft">VARCHAR NULL</span></div>
+            <div class="tbl-row"><span>qr_code</span><span class="ft">TEXT (base64)</span></div>
+            <div class="tbl-row"><span>issued_at</span><span class="ft">TIMESTAMP</span></div>
+          </div>
+        </div>
+
+        <div class="relations">
+          <h3>🔗 العلاقات الرئيسية</h3>
+          <div class="rel-tags">
+            <span class="rel-tag">users(1) ──→ products(many) [seller]</span>
+            <span class="rel-tag">users(1) ──→ orders(many) [buyer]</span>
+            <span class="rel-tag">users(1) ──→ orders(many) [seller]</span>
+            <span class="rel-tag">products(1) ──→ orders(many)</span>
+            <span class="rel-tag">orders(1) ──→ transactions(1)</span>
+            <span class="rel-tag">orders(1) ──→ vat_invoices(1)</span>
+            <span class="rel-tag">categories(tree) ──→ products(many)</span>
+          </div>
+        </div>
+
+        <div class="formula">
+          <h3>⚖️ معادلة الرسوم والضريبة (Zoo & × ZATCA)</h3>
+          <code>
+            <span class="c1">commission   = base_price × 0.05</span><br>
+            <span class="c1">vat_base     = base_price + commission</span><br>
+            <span class="c2">vat_amount   = vat_base × 0.15   ← تُسدَّد لهيئة ZATCA</span><br>
+            <span class="c3">buyer_pays   = vat_base + vat_amount + shipping(20)</span><br>
+            <span class="c4">seller_gets  = base_price − commission</span>
+          </code>
+          <div class="fex">
+            مثال عملي — منتج بسعر <strong>١٠٠٠ ر.س</strong>:<br>
+            عمولة Zoo & (٥٪) = <strong>٥٠ ر.س</strong> &nbsp;|&nbsp;
+            الوعاء الضريبي = <strong>١٠٥٠ ر.س</strong> &nbsp;|&nbsp;
+            ضريبة ١٥٪ = <strong>١٥٧.٥ ر.س</strong><br>
+            <strong>المشتري يدفع: ١٢٢٧.٥ ر.س</strong> &nbsp;|&nbsp;
+            <strong>البائع يستلم: ٩٥٠ ر.س</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- PRODUCT MODAL -->
+<div class="overlay" id="pModal">
+  <div class="modal">
+    <div class="mhead">
+      <h3 id="mTitle">تفاصيل المنتج</h3>
+      <button class="mclose" onclick="closeM()">✕</button>
+    </div>
+    <div class="mbody">
+      <div class="mvis">
+        <div class="emo" id="mEmo">🐕</div>
+        <div class="mname" id="mName">الاسم</div>
+        <div class="mseller" id="mSeller">👤 البائع</div>
+      </div>
+      <div class="breakdown">
+        <div class="brow"><span>سعر المنتج الأساسي</span><span id="bBase">—</span></div>
+        <div class="brow comm"><span>عمولة Zoo & (٥٪)</span><span id="bComm">—</span></div>
+        <div class="brow vat"><span>ضريبة القيمة المضافة ١٥٪ — ZATCA</span><span id="bVat">—</span></div>
+        <div class="brow"><span>رسوم الشحن</span><span>٢٠ ر.س</span></div>
+        <div class="brow total"><span>الإجمالي الكامل</span><span id="bTotal">—</span></div>
+      </div>
+      <div class="macts">
+        <button class="mbuy" onclick="buyNow()">🛒 اشتري الآن</button>
+        <button class="mwish" onclick="showT('❤️ أُضيف للمفضلة')">♡</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toasts" id="toasts"></div>
+
+<script>
+let cartN = 0;
+
+const toAr = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const fmtAr = n => toAr(parseFloat(n).toFixed(2));
+
+function sw(btn, sec) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+  ['animals','supplies','medicine','track','seller','schema'].forEach(s => {
+    document.getElementById('sec-'+s).style.display = s === sec ? 'block' : 'none';
+  });
+  // hide sidebar on schema
+  const sb = document.getElementById('sidebarEl');
+  sb.style.display = sec === 'schema' ? 'none' : '';
+  document.getElementById('mainGrid').style.gridTemplateColumns = sec === 'schema' ? '1fr' : '';
+}
+
+function gotoSchema() {
+  const btn = document.querySelector('.tab:nth-child(6)');
+  sw(btn, 'schema');
+  document.getElementById('tabNav').scrollIntoView({behavior:'smooth'});
+}
+
+function switchToSeller() {
+  const btn = document.querySelector('.tab:nth-child(5)');
+  sw(btn, 'seller');
+  document.getElementById('tabNav').scrollIntoView({behavior:'smooth'});
+}
+
+function tc(el) { el.classList.toggle('on'); }
+
+function openP(emo, name, seller, price) {
+  const comm = price * 0.05;
+  const vatBase = price + comm;
+  const vat = vatBase * 0.15;
+  const total = vatBase + vat + 20;
+  document.getElementById('mEmo').textContent = emo;
+  document.getElementById('mName').textContent = name;
+  document.getElementById('mTitle').textContent = name;
+  document.getElementById('mSeller').textContent = '👤 ' + seller;
+  document.getElementById('bBase').textContent = fmtAr(price) + ' ر.س';
+  document.getElementById('bComm').textContent = fmtAr(comm) + ' ر.س';
+  document.getElementById('bVat').textContent = fmtAr(vat) + ' ر.س';
+  document.getElementById('bTotal').textContent = fmtAr(total) + ' ر.س';
+  document.getElementById('pModal').classList.add('on');
+}
+
+function closeM() { document.getElementById('pModal').classList.remove('on'); }
+document.getElementById('pModal').addEventListener('click', e => { if(e.target===document.getElementById('pModal')) closeM(); });
+
+function addC() {
+  cartN++;
+  document.getElementById('cartB').textContent = cartN;
+  showT('✅ تمت الإضافة إلى السلة (' + toAr(cartN) + ')');
+}
+
+function buyNow() { closeM(); addC(); showT('🎉 سيتم توجيهك لإتمام الدفع عبر Moyasar'); }
+
+function showT(msg) {
+  const c = document.getElementById('toasts');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 2700);
+}
+
+// welcome
+setTimeout(() => showT('🐾 أهلاً بك في Zoo &'), 700);
+setTimeout(() => showT('🇸🇦 متوافق مع ZATCA وفاتورة'), 2000);
+</script>
+</body>
+</html>
